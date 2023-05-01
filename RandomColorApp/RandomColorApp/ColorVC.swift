@@ -6,6 +6,13 @@ class ColorVC: UIViewController {
  
     var colors : [UIColor] = []
     
+    enum Cells {
+        static let colorCell = "cell"
+    }
+    enum Segue {
+        static let toDetail = "toDetailVC"
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         addRandomColors()
@@ -14,16 +21,8 @@ class ColorVC: UIViewController {
     
     func addRandomColors() {
         for _ in 0..<50 {
-            colors.append(createRandomColor())
+            colors.append(.random())
         }
-    }
-    
-    func createRandomColor() -> UIColor{
-        let randomColor = UIColor(red: CGFloat.random(in: 0...1),
-                                  green: CGFloat.random(in: 0...1),
-                                  blue: CGFloat.random(in: 0...1),
-                                  alpha: 1)//Görünürlük.
-        return randomColor
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -38,13 +37,13 @@ extension ColorVC : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: Cells.colorCell , for: indexPath)
         cell.backgroundColor = colors[indexPath.row]
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let color = colors[indexPath.row]
-        performSegue(withIdentifier: "toDetailVC", sender: color)
+        performSegue(withIdentifier: Segue.toDetail , sender: color)
     }
 }
